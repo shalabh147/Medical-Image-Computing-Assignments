@@ -1,0 +1,1 @@
+Images and figures in each question have been added to q1.mat , q2.mat , q3.mat , q4.mat respectively. These files are in respective folders in results.

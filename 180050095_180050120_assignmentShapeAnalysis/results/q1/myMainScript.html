@@ -1,0 +1,711 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>myMainScript</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-01"><meta name="DC.source" content="myMainScript.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput">clc;
+numfiles=150;
+pts=0:16;
+pts=pts*(pi/8);
+shapes=zeros(2,16,150);
+
+<span class="comment">% for alpha=1:numfiles</span>
+<span class="comment">%     s='../../data/ellipse/data/';</span>
+<span class="comment">%     s=strcat(s,num2str(alpha));</span>
+<span class="comment">%     s=strcat(s,'.jpg');</span>
+<span class="comment">%     mat_im=imread(s);</span>
+<span class="comment">%     shapee=size(mat_im);</span>
+<span class="comment">%     bw=rgb2gray(mat_im);</span>
+<span class="comment">%     x=bw&gt;100;</span>
+<span class="comment">%     %imshow(bw);</span>
+<span class="comment">%</span>
+<span class="comment">%     %pause;</span>
+<span class="comment">%     %reference- https://blogs.mathworks.com/steve/2015/08/17/ellipse-visualization-and-regionprops/</span>
+<span class="comment">%</span>
+<span class="comment">%     ellipse=regionprops('table',x,'Centroid','MajorAxisLength','MinorAxisLength','Orientation');</span>
+<span class="comment">%     center=ellipse.Centroid;</span>
+<span class="comment">%     a=ellipse.MajorAxisLength/2;</span>
+<span class="comment">%     b=ellipse.MinorAxisLength/2;</span>
+<span class="comment">%     x=center(1);</span>
+<span class="comment">%     y=center(2);</span>
+<span class="comment">%     thet=ellipse.Orientation;</span>
+<span class="comment">%     theta=deg2rad(thet);</span>
+<span class="comment">%</span>
+<span class="comment">%     X=x+a*cos(pts)*cos(theta) - b*sin(pts)*sin(theta);</span>
+<span class="comment">%     Y=y+a*cos(pts)*sin(theta) + b*sin(pts)*cos(theta);</span>
+<span class="comment">%     %plot(X,Y,'r');</span>
+<span class="comment">%</span>
+<span class="comment">%     X=X(:,1:16);</span>
+<span class="comment">%     Y=Y(:,1:16);</span>
+<span class="comment">%     shapes(1,:,alpha)=X;</span>
+<span class="comment">%     shapes(2,:,alpha)=Y;</span>
+<span class="comment">%     %pause;</span>
+<span class="comment">%</span>
+<span class="comment">% end</span>
+<span class="comment">% pause;</span>
+load(<span class="string">'points.mat'</span>, <span class="string">'shapes'</span>);
+
+figure(1);
+<span class="keyword">for</span> i=1:150
+    pointsetplot=zeros(2,17);
+    pointsetplot(1,1:16)=shapes(1,1:16,i);
+    pointsetplot(1,17)=shapes(1,1,i);
+    pointsetplot(2,1:16)=shapes(2,1:16,i);
+    pointsetplot(2,17)=shapes(2,1,i);
+
+    plot(pointsetplot(1,:) , pointsetplot(2,:) , <span class="string">'color'</span> , [rand rand rand])
+    title(<span class="string">'Unaligned Data Set'</span>)
+    hold <span class="string">on</span>;
+<span class="keyword">end</span>
+<span class="comment">% pause;</span>
+
+
+mean_ = mean_finder(shapes);     <span class="comment">% returns 32,2 matrix</span>
+ aligned_pt_set1 = zeros(2,16,150);
+
+    <span class="keyword">for</span> i=1:150
+        pt_set1 = mean_;
+        pt_set2 = shapes(:,:,i)';
+        aligned_pt_set1(:,:,i) = align_pointset(pt_set1 , pt_set2)';        <span class="comment">%aligning all shapes to mean</span>
+    <span class="keyword">end</span>
+    figure(2);
+
+   distance = zeros(150,1);
+<span class="keyword">for</span> i=1:150
+    mean_plot=zeros(17,2);
+    mean_plot(1:16,1)=mean_(1:16,1);
+    mean_plot(17,1)=mean_(1,1);
+    mean_plot(1:16,2)=mean_(1:16,2);
+    mean_plot(17,2)=mean_(1,2);
+    p = plot(mean_plot(:,1) , mean_plot(:,2) , <span class="string">'color'</span>,<span class="string">'black'</span>);
+    p(1).LineWidth = 2;
+     hold <span class="string">on</span>;
+     aligned_pt_set1_plot=zeros(2,17);
+     aligned_pt_set1_plot(1,1:16)=aligned_pt_set1(1,1:16,i);
+     aligned_pt_set1_plot(1,17)=aligned_pt_set1(1,1,i);
+
+     aligned_pt_set1_plot(2,1:16)=aligned_pt_set1(2,1:16,i);
+     aligned_pt_set1_plot(2,17)=aligned_pt_set1(2,1,i);
+    plot(aligned_pt_set1_plot(1,:) , aligned_pt_set1_plot(2,:) , <span class="string">'color'</span> , [rand rand rand])
+    distance(i) = norm(aligned_pt_set1(:,:,i) - mean_');
+
+<span class="keyword">end</span>
+title(<span class="string">'Aligned data set along with mean(thick black)'</span>);
+<span class="comment">% pause;</span>
+
+figure(3);
+<span class="comment">%subplot(1,3,2);</span>
+
+plot(mean_plot(:,1) , mean_plot(:,2),<span class="string">'-o'</span>)
+title(<span class="string">'Mean with pointset'</span>);
+<span class="comment">% pause;</span>
+
+mean_flattened = reshape(mean_ , 16*2 , 1) ;   <span class="comment">%flatten to bring in preshape space</span>
+[eigen_vectors, eigen_values] = modes_finder(mean_flattened,mean_,shapes);
+<span class="comment">%eigen_vectors = eigen(1);</span>
+<span class="comment">%eigen_values = eigen(2);</span>
+figure(4);
+
+[vals,indexes]=sort(eigen_values);
+
+
+plot(real(vals));
+title(<span class="string">'Eigenvalues'</span>);
+<span class="comment">% pause;</span>
+
+a1=indexes(32);
+a2=indexes(31);
+a3=indexes(30);
+
+
+prev_mode = mean_flattened - 3*eigen_values(a1)*eigen_vectors(:,a1);
+next_mode = mean_flattened + 3*eigen_values(a1)*eigen_vectors(:,a1);
+prev_mode = reshape(prev_mode , 16,2);
+next_mode = reshape(next_mode , 16,2);
+prev_mode = align_pointset(mean_,prev_mode);
+next_mode = align_pointset(mean_,next_mode);
+hold <span class="string">on</span>;
+
+figure(5);
+
+subplot(3,3,2);
+
+plot(mean_plot(:,1) , mean_plot(:,2),<span class="string">'-*'</span>);
+title(<span class="string">'First mode of variation'</span>)
+
+prev_mode_plot=zeros(17,2);
+prev_mode_plot(1:16,1)=prev_mode(1:16,1);
+prev_mode_plot(17,1)=prev_mode(1,1);
+prev_mode_plot(1:16,2)=prev_mode(1:16,2);
+prev_mode_plot(17,2)=prev_mode(1,2);
+
+subplot(3,3,1);
+
+plot(prev_mode_plot(:,1),prev_mode_plot(:,2),<span class="string">'-*'</span>);
+
+next_mode_plot=zeros(17,2);
+next_mode_plot(1:16,1)=next_mode(1:16,1);
+next_mode_plot(17,1)=next_mode(1,1);
+next_mode_plot(1:16,2)=next_mode(1:16,2);
+next_mode_plot(17,2)=next_mode(1,2);
+
+subplot(3,3,3);
+plot(next_mode_plot(:,1),next_mode_plot(:,2) , <span class="string">'-*'</span>);
+<span class="comment">% pause;</span>
+
+prev_mode_2 = mean_flattened - 3*eigen_values(a2)*eigen_vectors(:,a2);
+next_mode_2 = mean_flattened + 3*eigen_values(a2)*eigen_vectors(:,a2);
+prev_mode_2 = reshape(prev_mode_2 , 16,2);
+next_mode_2 = reshape(next_mode_2 , 16,2);
+prev_mode_2 = align_pointset(mean_,prev_mode_2);
+next_mode_2 = align_pointset(mean_,next_mode_2);
+
+<span class="comment">%figure(6);</span>
+
+subplot(3,3,5);
+
+plot(mean_plot(:,1) , mean_plot(:,2),<span class="string">'-*'</span>);
+title(<span class="string">'Second mode of variation'</span>);
+prev_mode2_plot=zeros(17,2);
+prev_mode2_plot(1:16,1)=prev_mode_2(1:16,1);
+prev_mode2_plot(17,1)=prev_mode_2(1,1);
+prev_mode2_plot(1:16,2)=prev_mode_2(1:16,2);
+prev_mode2_plot(17,2)=prev_mode_2(1,2);
+
+
+subplot(3,3,4);
+plot(prev_mode2_plot(:,1),prev_mode2_plot(:,2),<span class="string">'-*'</span>);
+next_mode2_plot=zeros(17,2);
+next_mode2_plot(1:16,1)=next_mode_2(1:16,1);
+next_mode2_plot(17,1)=next_mode_2(1,1);
+next_mode2_plot(1:16,2)=next_mode_2(1:16,2);
+next_mode2_plot(17,2)=next_mode_2(1,2);
+
+subplot(3,3,6);
+plot(next_mode2_plot(:,1),next_mode2_plot(:,2),<span class="string">'-*'</span>);
+<span class="comment">% pause;</span>
+
+prev_mode_3 = mean_flattened - 3*real(eigen_values(a3))*eigen_vectors(:,a3);
+next_mode_3 = mean_flattened + 3*real(eigen_values(a3))*eigen_vectors(:,a3);
+prev_mode_3 = reshape(prev_mode_3 , 16,2);
+next_mode_3 = reshape(next_mode_3 , 16,2);
+prev_mode_3 = align_pointset(mean_,prev_mode_3);
+next_mode_3 = align_pointset(mean_,next_mode_3);
+
+<span class="comment">%figure(7);</span>
+
+subplot(3,3,8);
+
+plot(mean_(:,1) , mean_(:,2),<span class="string">'-*'</span>);
+title(<span class="string">'Third mode of variation'</span>);
+prev_mode3_plot=zeros(17,2);
+prev_mode3_plot(1:16,1)=prev_mode_3(1:16,1);
+prev_mode3_plot(17,1)=prev_mode_3(1,1);
+prev_mode3_plot(1:16,2)=prev_mode_3(1:16,2);
+prev_mode3_plot(17,2)=prev_mode_3(1,2);
+
+subplot(3,3,7);
+plot(prev_mode3_plot(:,1),prev_mode3_plot(:,2),<span class="string">'-*'</span>);
+next_mode3_plot=zeros(17,2);
+next_mode3_plot(1:16,1)=next_mode_3(1:16,1);
+next_mode3_plot(17,1)=next_mode_3(1,1);
+next_mode3_plot(1:16,2)=next_mode_3(1:16,2);
+next_mode3_plot(17,2)=next_mode_3(1,2);
+
+
+subplot(3,3,9);
+plot(next_mode3_plot(:,1),next_mode3_plot(:,2),<span class="string">'-*'</span>);
+<span class="comment">% pause;</span>
+
+figure(8);
+[M,I] = min(distance);
+pointsetplot=zeros(2,17);
+    pointsetplot(1,1:16)=aligned_pt_set1(1,1:16,I);
+    pointsetplot(1,17)=aligned_pt_set1(1,1,I);
+    pointsetplot(2,1:16)=aligned_pt_set1(2,1:16,I);
+    pointsetplot(2,17)=aligned_pt_set1(2,1,I);
+<span class="comment">%disp(I)</span>
+plot(mean_plot(:,1),mean_plot(:,2),<span class="string">'color'</span>,<span class="string">'red'</span>)
+hold <span class="string">on</span>;
+plot(pointsetplot(1,:) , pointsetplot(2,:),<span class="string">'color'</span>,<span class="string">'blue'</span>)
+legend(<span class="string">'Mean'</span>,<span class="string">'Closest'</span>)
+<span class="comment">% pause;</span>
+
+distance2 = zeros(150,1);
+distance3 = zeros(150,1);
+<span class="keyword">for</span> i=1:150
+    distance2(i) = norm(prev_mode - align_pointset(prev_mode,shapes(:,:,i)'));
+    distance3(i) = norm(next_mode - align_pointset(next_mode , shapes(:,:,i)'));
+<span class="keyword">end</span>
+
+[M2 , i2] = min(distance2);
+[M3 , i3] = min(distance3);
+i3
+figure(9);
+A = align_pointset(prev_mode,shapes(:,:,i2)');
+B = align_pointset(next_mode , shapes(:,:,i3)');
+pointsetplot=zeros(2,17);
+    pointsetplot(1,1:16)=A(1:16,1);
+    pointsetplot(1,17)=A(1,1);
+    pointsetplot(2,1:16)=A(1:16,2);
+    pointsetplot(2,17)=A(1,2);
+
+plot(pointsetplot(1,:) , pointsetplot(2,:),<span class="string">'color'</span>,<span class="string">'red'</span>);
+hold <span class="string">on</span>;
+plot(prev_mode_plot(:,1),prev_mode_plot(:,2),<span class="string">'color'</span>,<span class="string">'blue'</span>);
+legend(<span class="string">'Mean - first mode'</span>,<span class="string">'Closest '</span>)
+<span class="comment">% pause;</span>
+
+figure(10);
+pointsetplot=zeros(2,17);
+    pointsetplot(1,1:16)=B(1:16,1);
+    pointsetplot(1,17)=B(1,1);
+    pointsetplot(2,1:16)=B(1:16,2);
+    pointsetplot(2,17)=B(1,2);
+
+plot(pointsetplot(1,:) , pointsetplot(2,:),<span class="string">'color'</span>,<span class="string">'red'</span>);
+hold <span class="string">on</span>;
+plot(next_mode_plot(:,1) , next_mode_plot(:,2),<span class="string">'color'</span>,<span class="string">'blue'</span>);
+legend(<span class="string">'Mean + first mode'</span>,<span class="string">'Closest'</span>);
+
+
+
+
+
+<span class="comment">%     mean_=mean_finder(shapes);</span>
+<span class="comment">%     mean_plot=zeros(17,2);</span>
+<span class="comment">%     mean_plot(1:16,1:2)=mean_;</span>
+<span class="comment">%     mean_plot(17,:)=mean_(1,:);</span>
+<span class="comment">%</span>
+<span class="comment">%     plot(mean_plot(:,1) , mean_plot(:,2),'red')</span>
+<span class="comment">%     mean_flattened = reshape(mean_ , 16*2 , 1) ;</span>
+<span class="comment">%     [eigen_vectors, eigen_values] = modes_finder(mean_flattened,mean_,shapes);</span>
+<span class="comment">%</span>
+<span class="comment">%     prev_mode = mean_flattened - 3*eigen_values(1)*eigen_vectors(:,1);</span>
+<span class="comment">%     next_mode = mean_flattened + 3*eigen_values(1)*eigen_vectors(:,1);</span>
+<span class="comment">%     prev_mode = reshape(prev_mode , 16,2);</span>
+<span class="comment">%     next_mode = reshape(next_mode , 16,2);</span>
+<span class="comment">%     prev_mode = align_pointset(mean_,prev_mode);</span>
+<span class="comment">%     next_mode = align_pointset(mean_,next_mode);</span>
+<span class="comment">%     hold on;</span>
+<span class="comment">%     prev_mode_plot=zeros(17,2);</span>
+<span class="comment">%     prev_mode_plot(1:16,1:2)=prev_mode;</span>
+<span class="comment">%     prev_mode_plot(17,:)=prev_mode(1,:);</span>
+<span class="comment">%</span>
+<span class="comment">%     plot(prev_mode_plot(:,1) , prev_mode_plot(:,2),'blue')</span>
+<span class="comment">%</span>
+<span class="comment">%     %plot(prev_mode(:,1),prev_mode(:,2),'blue');</span>
+<span class="comment">%     next_mode_plot=zeros(17,2);</span>
+<span class="comment">%     next_mode_plot(1:16,1:2)=next_mode;</span>
+<span class="comment">%     next_mode_plot(17,:)=next_mode(1,:);</span>
+<span class="comment">%</span>
+<span class="comment">%     plot(next_mode_plot(:,1) , next_mode_plot(:,2),'green')</span>
+<span class="comment">%</span>
+<span class="comment">%     %plot(next_mode(:,1),next_mode(:,2) , 'green');</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+</pre><pre class="codeoutput">   1.3788e+03
+
+   4.7705e-05
+
+   4.2704e-07
+
+   3.8229e-09
+
+   3.4223e-11
+
+
+ans =
+
+    32    32
+
+
+ans =
+
+    32    32
+
+
+i3 =
+
+    48
+
+</pre><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_05.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_06.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_07.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_08.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clc;
+numfiles=150;
+pts=0:16;
+pts=pts*(pi/8);
+shapes=zeros(2,16,150);
+
+% for alpha=1:numfiles
+%     s='../../data/ellipse/data/';
+%     s=strcat(s,num2str(alpha));
+%     s=strcat(s,'.jpg');
+%     mat_im=imread(s);
+%     shapee=size(mat_im);
+%     bw=rgb2gray(mat_im);
+%     x=bw>100;
+%     %imshow(bw);
+%     
+%     %pause;
+%     %reference- https://blogs.mathworks.com/steve/2015/08/17/ellipse-visualization-and-regionprops/
+%     
+%     ellipse=regionprops('table',x,'Centroid','MajorAxisLength','MinorAxisLength','Orientation');
+%     center=ellipse.Centroid;
+%     a=ellipse.MajorAxisLength/2;
+%     b=ellipse.MinorAxisLength/2;
+%     x=center(1);
+%     y=center(2);
+%     thet=ellipse.Orientation;
+%     theta=deg2rad(thet);
+%     
+%     X=x+a*cos(pts)*cos(theta) - b*sin(pts)*sin(theta);
+%     Y=y+a*cos(pts)*sin(theta) + b*sin(pts)*cos(theta);
+%     %plot(X,Y,'r');
+%     
+%     X=X(:,1:16);
+%     Y=Y(:,1:16);
+%     shapes(1,:,alpha)=X;
+%     shapes(2,:,alpha)=Y;
+%     %pause;
+%     
+% end
+% pause;
+load('points.mat', 'shapes');
+
+figure(1);
+for i=1:150
+    pointsetplot=zeros(2,17);
+    pointsetplot(1,1:16)=shapes(1,1:16,i);
+    pointsetplot(1,17)=shapes(1,1,i);
+    pointsetplot(2,1:16)=shapes(2,1:16,i);
+    pointsetplot(2,17)=shapes(2,1,i);
+    
+    plot(pointsetplot(1,:) , pointsetplot(2,:) , 'color' , [rand rand rand])
+    title('Unaligned Data Set')
+    hold on;
+end
+% pause;
+
+
+mean_ = mean_finder(shapes);     % returns 32,2 matrix
+ aligned_pt_set1 = zeros(2,16,150);
+ 
+    for i=1:150
+        pt_set1 = mean_;      
+        pt_set2 = shapes(:,:,i)';
+        aligned_pt_set1(:,:,i) = align_pointset(pt_set1 , pt_set2)';        %aligning all shapes to mean
+    end
+    figure(2);
+  
+   distance = zeros(150,1);
+for i=1:150
+    mean_plot=zeros(17,2);
+    mean_plot(1:16,1)=mean_(1:16,1);
+    mean_plot(17,1)=mean_(1,1);
+    mean_plot(1:16,2)=mean_(1:16,2);
+    mean_plot(17,2)=mean_(1,2);
+    p = plot(mean_plot(:,1) , mean_plot(:,2) , 'color','black');
+    p(1).LineWidth = 2;
+     hold on;
+     aligned_pt_set1_plot=zeros(2,17);
+     aligned_pt_set1_plot(1,1:16)=aligned_pt_set1(1,1:16,i);
+     aligned_pt_set1_plot(1,17)=aligned_pt_set1(1,1,i);
+    
+     aligned_pt_set1_plot(2,1:16)=aligned_pt_set1(2,1:16,i);
+     aligned_pt_set1_plot(2,17)=aligned_pt_set1(2,1,i);
+    plot(aligned_pt_set1_plot(1,:) , aligned_pt_set1_plot(2,:) , 'color' , [rand rand rand])
+    distance(i) = norm(aligned_pt_set1(:,:,i) - mean_');
+   
+end
+title('Aligned data set along with mean(thick black)');
+% pause;
+
+figure(3);
+%subplot(1,3,2);
+
+plot(mean_plot(:,1) , mean_plot(:,2),'-o')  
+title('Mean with pointset');
+% pause;
+
+mean_flattened = reshape(mean_ , 16*2 , 1) ;   %flatten to bring in preshape space
+[eigen_vectors, eigen_values] = modes_finder(mean_flattened,mean_,shapes);
+%eigen_vectors = eigen(1);
+%eigen_values = eigen(2);
+figure(4);
+
+[vals,indexes]=sort(eigen_values);
+
+
+plot(real(vals));
+title('Eigenvalues');
+% pause;
+
+a1=indexes(32);
+a2=indexes(31);
+a3=indexes(30);
+
+
+prev_mode = mean_flattened - 3*eigen_values(a1)*eigen_vectors(:,a1);
+next_mode = mean_flattened + 3*eigen_values(a1)*eigen_vectors(:,a1);
+prev_mode = reshape(prev_mode , 16,2);
+next_mode = reshape(next_mode , 16,2);
+prev_mode = align_pointset(mean_,prev_mode);
+next_mode = align_pointset(mean_,next_mode);
+hold on;
+
+figure(5);
+
+subplot(3,3,2);
+
+plot(mean_plot(:,1) , mean_plot(:,2),'-*');
+title('First mode of variation')
+
+prev_mode_plot=zeros(17,2);
+prev_mode_plot(1:16,1)=prev_mode(1:16,1);
+prev_mode_plot(17,1)=prev_mode(1,1);
+prev_mode_plot(1:16,2)=prev_mode(1:16,2);
+prev_mode_plot(17,2)=prev_mode(1,2);
+
+subplot(3,3,1);
+
+plot(prev_mode_plot(:,1),prev_mode_plot(:,2),'-*');
+
+next_mode_plot=zeros(17,2);
+next_mode_plot(1:16,1)=next_mode(1:16,1);
+next_mode_plot(17,1)=next_mode(1,1);
+next_mode_plot(1:16,2)=next_mode(1:16,2);
+next_mode_plot(17,2)=next_mode(1,2);
+
+subplot(3,3,3);
+plot(next_mode_plot(:,1),next_mode_plot(:,2) , '-*');
+% pause;
+
+prev_mode_2 = mean_flattened - 3*eigen_values(a2)*eigen_vectors(:,a2);
+next_mode_2 = mean_flattened + 3*eigen_values(a2)*eigen_vectors(:,a2);
+prev_mode_2 = reshape(prev_mode_2 , 16,2);
+next_mode_2 = reshape(next_mode_2 , 16,2);
+prev_mode_2 = align_pointset(mean_,prev_mode_2);
+next_mode_2 = align_pointset(mean_,next_mode_2);
+
+%figure(6);
+
+subplot(3,3,5);
+
+plot(mean_plot(:,1) , mean_plot(:,2),'-*');
+title('Second mode of variation');
+prev_mode2_plot=zeros(17,2);
+prev_mode2_plot(1:16,1)=prev_mode_2(1:16,1);
+prev_mode2_plot(17,1)=prev_mode_2(1,1);
+prev_mode2_plot(1:16,2)=prev_mode_2(1:16,2);
+prev_mode2_plot(17,2)=prev_mode_2(1,2);
+
+
+subplot(3,3,4);
+plot(prev_mode2_plot(:,1),prev_mode2_plot(:,2),'-*');
+next_mode2_plot=zeros(17,2);
+next_mode2_plot(1:16,1)=next_mode_2(1:16,1);
+next_mode2_plot(17,1)=next_mode_2(1,1);
+next_mode2_plot(1:16,2)=next_mode_2(1:16,2);
+next_mode2_plot(17,2)=next_mode_2(1,2);
+
+subplot(3,3,6);
+plot(next_mode2_plot(:,1),next_mode2_plot(:,2),'-*');
+% pause;
+
+prev_mode_3 = mean_flattened - 3*real(eigen_values(a3))*eigen_vectors(:,a3);
+next_mode_3 = mean_flattened + 3*real(eigen_values(a3))*eigen_vectors(:,a3);
+prev_mode_3 = reshape(prev_mode_3 , 16,2);
+next_mode_3 = reshape(next_mode_3 , 16,2);
+prev_mode_3 = align_pointset(mean_,prev_mode_3);
+next_mode_3 = align_pointset(mean_,next_mode_3);
+
+%figure(7);
+
+subplot(3,3,8);
+
+plot(mean_(:,1) , mean_(:,2),'-*');
+title('Third mode of variation');
+prev_mode3_plot=zeros(17,2);
+prev_mode3_plot(1:16,1)=prev_mode_3(1:16,1);
+prev_mode3_plot(17,1)=prev_mode_3(1,1);
+prev_mode3_plot(1:16,2)=prev_mode_3(1:16,2);
+prev_mode3_plot(17,2)=prev_mode_3(1,2);
+
+subplot(3,3,7);
+plot(prev_mode3_plot(:,1),prev_mode3_plot(:,2),'-*');
+next_mode3_plot=zeros(17,2);
+next_mode3_plot(1:16,1)=next_mode_3(1:16,1);
+next_mode3_plot(17,1)=next_mode_3(1,1);
+next_mode3_plot(1:16,2)=next_mode_3(1:16,2);
+next_mode3_plot(17,2)=next_mode_3(1,2);
+
+
+subplot(3,3,9);
+plot(next_mode3_plot(:,1),next_mode3_plot(:,2),'-*');
+% pause;
+
+figure(8);
+[M,I] = min(distance);
+pointsetplot=zeros(2,17);
+    pointsetplot(1,1:16)=aligned_pt_set1(1,1:16,I);
+    pointsetplot(1,17)=aligned_pt_set1(1,1,I);
+    pointsetplot(2,1:16)=aligned_pt_set1(2,1:16,I);
+    pointsetplot(2,17)=aligned_pt_set1(2,1,I);
+%disp(I)
+plot(mean_plot(:,1),mean_plot(:,2),'color','red')
+hold on;
+plot(pointsetplot(1,:) , pointsetplot(2,:),'color','blue')
+legend('Mean','Closest')
+% pause;
+
+distance2 = zeros(150,1);
+distance3 = zeros(150,1);
+for i=1:150
+    distance2(i) = norm(prev_mode - align_pointset(prev_mode,shapes(:,:,i)'));
+    distance3(i) = norm(next_mode - align_pointset(next_mode , shapes(:,:,i)'));
+end
+
+[M2 , i2] = min(distance2);
+[M3 , i3] = min(distance3);
+i3
+figure(9);
+A = align_pointset(prev_mode,shapes(:,:,i2)');
+B = align_pointset(next_mode , shapes(:,:,i3)');
+pointsetplot=zeros(2,17);
+    pointsetplot(1,1:16)=A(1:16,1);
+    pointsetplot(1,17)=A(1,1);
+    pointsetplot(2,1:16)=A(1:16,2);
+    pointsetplot(2,17)=A(1,2);
+
+plot(pointsetplot(1,:) , pointsetplot(2,:),'color','red');
+hold on;
+plot(prev_mode_plot(:,1),prev_mode_plot(:,2),'color','blue');
+legend('Mean - first mode','Closest ')
+% pause;
+
+figure(10);
+pointsetplot=zeros(2,17);
+    pointsetplot(1,1:16)=B(1:16,1);
+    pointsetplot(1,17)=B(1,1);
+    pointsetplot(2,1:16)=B(1:16,2);
+    pointsetplot(2,17)=B(1,2);
+
+plot(pointsetplot(1,:) , pointsetplot(2,:),'color','red');
+hold on;
+plot(next_mode_plot(:,1) , next_mode_plot(:,2),'color','blue');
+legend('Mean + first mode','Closest');
+
+
+
+    
+    
+%     mean_=mean_finder(shapes);
+%     mean_plot=zeros(17,2);
+%     mean_plot(1:16,1:2)=mean_;
+%     mean_plot(17,:)=mean_(1,:);
+%     
+%     plot(mean_plot(:,1) , mean_plot(:,2),'red')  
+%     mean_flattened = reshape(mean_ , 16*2 , 1) ; 
+%     [eigen_vectors, eigen_values] = modes_finder(mean_flattened,mean_,shapes);
+%     
+%     prev_mode = mean_flattened - 3*eigen_values(1)*eigen_vectors(:,1);
+%     next_mode = mean_flattened + 3*eigen_values(1)*eigen_vectors(:,1);
+%     prev_mode = reshape(prev_mode , 16,2);
+%     next_mode = reshape(next_mode , 16,2);
+%     prev_mode = align_pointset(mean_,prev_mode);
+%     next_mode = align_pointset(mean_,next_mode);
+%     hold on;
+%     prev_mode_plot=zeros(17,2);
+%     prev_mode_plot(1:16,1:2)=prev_mode;
+%     prev_mode_plot(17,:)=prev_mode(1,:);
+%     
+%     plot(prev_mode_plot(:,1) , prev_mode_plot(:,2),'blue')  
+%     
+%     %plot(prev_mode(:,1),prev_mode(:,2),'blue');
+%     next_mode_plot=zeros(17,2);
+%     next_mode_plot(1:16,1:2)=next_mode;
+%     next_mode_plot(17,:)=next_mode(1,:);
+%     
+%     plot(next_mode_plot(:,1) , next_mode_plot(:,2),'green')  
+%     
+%     %plot(next_mode(:,1),next_mode(:,2) , 'green');
+% 
+%     
+%     
+%     
+% 
+%     
+%    
+    
+
+##### SOURCE END #####
+--></body></html>
